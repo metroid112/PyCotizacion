@@ -15,10 +15,10 @@ def main():
     url = 'https://www.brou.com.uy/cotizaciones'
     response = session.get(url, headers=header)
 
-    viejo_cotizacion_brou_compra = 1
-    viejo_cotizacion_brou_venta = 1
-    viejo_cotizacion_ebrou_compra = 1
-    viejo_cotizacion_ebrou_venta = 1
+    viejo_cotizacion_brou_compra = 0
+    viejo_cotizacion_brou_venta = 0
+    viejo_cotizacion_ebrou_compra = 0
+    viejo_cotizacion_ebrou_venta = 0
     while True:
         response.html.render(sleep=.5)
         cotizaciones = findall('"valor"> (.+?) <', response.html.html)
@@ -28,10 +28,22 @@ def main():
             cotizacion_ebrou_compra = float(cotizaciones[4].replace(',', '.'))
             cotizacion_ebrou_venta = float(cotizaciones[5].replace(',', '.'))
 
-            variacion_cotizacion_brou_compra = round((cotizacion_brou_compra - viejo_cotizacion_brou_compra) / viejo_cotizacion_brou_compra, 2)
-            variacion_cotizacion_brou_venta = round((cotizacion_brou_venta - viejo_cotizacion_brou_venta) / viejo_cotizacion_brou_venta, 2)
-            variacion_cotizacion_ebrou_compra = round((cotizacion_ebrou_compra - viejo_cotizacion_ebrou_compra) / viejo_cotizacion_ebrou_compra, 2)
-            variacion_cotizacion_ebrou_venta = round((cotizacion_ebrou_venta - viejo_cotizacion_ebrou_venta) / viejo_cotizacion_ebrou_venta, 2)
+            if viejo_cotizacion_brou_compra != 0:
+                variacion_cotizacion_brou_compra = round((cotizacion_brou_compra - viejo_cotizacion_brou_compra) / viejo_cotizacion_brou_compra, 2)
+            else:
+                variacion_cotizacion_brou_compra = 0
+            if viejo_cotizacion_brou_venta != 0:
+                variacion_cotizacion_brou_venta = round((cotizacion_brou_venta - viejo_cotizacion_brou_venta) / viejo_cotizacion_brou_venta, 2)
+            else:
+                variacion_cotizacion_brou_venta = 0
+            if viejo_cotizacion_ebrou_compra != 0:
+                variacion_cotizacion_ebrou_compra = round((cotizacion_ebrou_compra - viejo_cotizacion_ebrou_compra) / viejo_cotizacion_ebrou_compra, 2)
+            else:
+                variacion_cotizacion_ebrou_compra = 0
+            if viejo_cotizacion_ebrou_venta != 0:
+                variacion_cotizacion_ebrou_venta = round((cotizacion_ebrou_venta - viejo_cotizacion_ebrou_venta) / viejo_cotizacion_ebrou_venta, 2)
+            else:
+                variacion_cotizacion_ebrou_venta = 0
 
             if variacion_cotizacion_brou_compra == 0:
                 str_variacion_cotizacion_brou_compra = f'→{variacion_cotizacion_brou_compra}'
@@ -73,7 +85,7 @@ def main():
             viejo_cotizacion_ebrou_compra = cotizacion_ebrou_compra
             viejo_cotizacion_ebrou_venta = cotizacion_ebrou_venta
 
-            with open('log_cotizacion.csv', 'a+') as log_file:
+            with open('log_cotizacion.csv', 'a+', newline='') as log_file:
                 log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 log_writer.writerow([now, cotizacion_brou_compra, cotizacion_brou_venta, cotizacion_ebrou_compra, cotizacion_ebrou_venta])
         except IndexError:
