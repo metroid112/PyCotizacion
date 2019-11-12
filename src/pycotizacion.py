@@ -2,8 +2,7 @@ import csv
 
 from re import findall
 from requests_html import HTMLSession
-from time import sleep
-from datetime import datetime, date
+from datetime import datetime
 from dateutil import parser
 
 
@@ -16,11 +15,6 @@ def main():
     url = 'https://www.brou.com.uy/cotizaciones'
     response = session.get(url, headers=header)
 
-    viejo_cotizacion_brou_compra = 0
-    viejo_cotizacion_brou_venta = 0
-    viejo_cotizacion_ebrou_compra = 0
-    viejo_cotizacion_ebrou_venta = 0
-
     response.html.render(sleep=.5)
     cotizaciones = findall('"valor"> (.+?) <', response.html.html)
     try:
@@ -29,62 +23,12 @@ def main():
         cotizacion_ebrou_compra = float(cotizaciones[4].replace(',', '.'))
         cotizacion_ebrou_venta = float(cotizaciones[5].replace(',', '.'))
 
-        if viejo_cotizacion_brou_compra != 0:
-            variacion_cotizacion_brou_compra = round((cotizacion_brou_compra - viejo_cotizacion_brou_compra) / viejo_cotizacion_brou_compra, 2)
-        else:
-            variacion_cotizacion_brou_compra = 0
-        if viejo_cotizacion_brou_venta != 0:
-            variacion_cotizacion_brou_venta = round((cotizacion_brou_venta - viejo_cotizacion_brou_venta) / viejo_cotizacion_brou_venta, 2)
-        else:
-            variacion_cotizacion_brou_venta = 0
-        if viejo_cotizacion_ebrou_compra != 0:
-            variacion_cotizacion_ebrou_compra = round((cotizacion_ebrou_compra - viejo_cotizacion_ebrou_compra) / viejo_cotizacion_ebrou_compra, 2)
-        else:
-            variacion_cotizacion_ebrou_compra = 0
-        if viejo_cotizacion_ebrou_venta != 0:
-            variacion_cotizacion_ebrou_venta = round((cotizacion_ebrou_venta - viejo_cotizacion_ebrou_venta) / viejo_cotizacion_ebrou_venta, 2)
-        else:
-            variacion_cotizacion_ebrou_venta = 0
-
-        if variacion_cotizacion_brou_compra == 0:
-            str_variacion_cotizacion_brou_compra = f'→{variacion_cotizacion_brou_compra}'
-        if variacion_cotizacion_brou_compra > 0:
-            str_variacion_cotizacion_brou_compra = f'↑{variacion_cotizacion_brou_compra}'
-        if variacion_cotizacion_brou_compra < 0:
-            str_variacion_cotizacion_brou_compra = f'↓{variacion_cotizacion_brou_compra}'
-
-        if variacion_cotizacion_brou_venta == 0:
-            str_variacion_cotizacion_brou_venta = f'→{variacion_cotizacion_brou_venta}'
-        if variacion_cotizacion_brou_venta > 0:
-            str_variacion_cotizacion_brou_venta = f'↑{variacion_cotizacion_brou_venta}'
-        if variacion_cotizacion_brou_venta < 0:
-            str_variacion_cotizacion_brou_venta = f'↓{variacion_cotizacion_brou_venta}'
-
-        if variacion_cotizacion_ebrou_compra == 0:
-            str_variacion_cotizacion_ebrou_compra = f'→{variacion_cotizacion_ebrou_compra}'
-        if variacion_cotizacion_ebrou_compra > 0:
-            str_variacion_cotizacion_ebrou_compra = f'↑{variacion_cotizacion_ebrou_compra}'
-        if variacion_cotizacion_ebrou_compra < 0:
-            str_variacion_cotizacion_ebrou_compra = f'↓{variacion_cotizacion_ebrou_compra}'
-
-        if variacion_cotizacion_ebrou_venta == 0:
-            str_variacion_cotizacion_ebrou_venta = f'→{variacion_cotizacion_ebrou_venta}'
-        if variacion_cotizacion_ebrou_venta > 0:
-            str_variacion_cotizacion_ebrou_venta = f'↑{variacion_cotizacion_ebrou_venta}'
-        if variacion_cotizacion_ebrou_venta < 0:
-            str_variacion_cotizacion_ebrou_venta = f'↓{variacion_cotizacion_ebrou_venta}'
-
         now = datetime.now()
 
         print('------------------------------------------------')
         print(f'\tFecha:\t{now}')
-        print(f'\tDolar BROU  -> C: ${cotizacion_brou_compra} - {str_variacion_cotizacion_brou_compra}% | V: ${cotizacion_brou_venta} - {str_variacion_cotizacion_brou_venta}%')
-        print(f'\tDolar eBROU -> C: ${cotizacion_ebrou_compra} - {str_variacion_cotizacion_ebrou_compra}% | V: ${cotizacion_ebrou_venta} - {str_variacion_cotizacion_ebrou_venta}%')
-
-        viejo_cotizacion_brou_compra = cotizacion_brou_compra
-        viejo_cotizacion_brou_venta = cotizacion_brou_venta
-        viejo_cotizacion_ebrou_compra = cotizacion_ebrou_compra
-        viejo_cotizacion_ebrou_venta = cotizacion_ebrou_venta
+        print(f'\tDolar BROU  -> C: ${cotizacion_brou_compra} | V: ${cotizacion_brou_venta}')
+        print(f'\tDolar eBROU -> C: ${cotizacion_ebrou_compra} | V: ${cotizacion_ebrou_venta}')
 
         with open('log_cotizacion.csv', mode='r', newline='') as log_file:
             last_register_date = list(csv.reader(log_file, delimiter=','))[-1][-1]
