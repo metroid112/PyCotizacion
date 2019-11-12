@@ -20,85 +20,83 @@ def main():
     viejo_cotizacion_brou_venta = 0
     viejo_cotizacion_ebrou_compra = 0
     viejo_cotizacion_ebrou_venta = 0
-    while True:
-        response.html.render(sleep=.5)
-        cotizaciones = findall('"valor"> (.+?) <', response.html.html)
-        try:
-            cotizacion_brou_compra = float(cotizaciones[0].replace(',', '.'))
-            cotizacion_brou_venta = float(cotizaciones[1].replace(',', '.'))
-            cotizacion_ebrou_compra = float(cotizaciones[4].replace(',', '.'))
-            cotizacion_ebrou_venta = float(cotizaciones[5].replace(',', '.'))
 
-            if viejo_cotizacion_brou_compra != 0:
-                variacion_cotizacion_brou_compra = round((cotizacion_brou_compra - viejo_cotizacion_brou_compra) / viejo_cotizacion_brou_compra, 2)
-            else:
-                variacion_cotizacion_brou_compra = 0
-            if viejo_cotizacion_brou_venta != 0:
-                variacion_cotizacion_brou_venta = round((cotizacion_brou_venta - viejo_cotizacion_brou_venta) / viejo_cotizacion_brou_venta, 2)
-            else:
-                variacion_cotizacion_brou_venta = 0
-            if viejo_cotizacion_ebrou_compra != 0:
-                variacion_cotizacion_ebrou_compra = round((cotizacion_ebrou_compra - viejo_cotizacion_ebrou_compra) / viejo_cotizacion_ebrou_compra, 2)
-            else:
-                variacion_cotizacion_ebrou_compra = 0
-            if viejo_cotizacion_ebrou_venta != 0:
-                variacion_cotizacion_ebrou_venta = round((cotizacion_ebrou_venta - viejo_cotizacion_ebrou_venta) / viejo_cotizacion_ebrou_venta, 2)
-            else:
-                variacion_cotizacion_ebrou_venta = 0
+    response.html.render(sleep=.5)
+    cotizaciones = findall('"valor"> (.+?) <', response.html.html)
+    try:
+        cotizacion_brou_compra = float(cotizaciones[0].replace(',', '.'))
+        cotizacion_brou_venta = float(cotizaciones[1].replace(',', '.'))
+        cotizacion_ebrou_compra = float(cotizaciones[4].replace(',', '.'))
+        cotizacion_ebrou_venta = float(cotizaciones[5].replace(',', '.'))
 
-            if variacion_cotizacion_brou_compra == 0:
-                str_variacion_cotizacion_brou_compra = f'→{variacion_cotizacion_brou_compra}'
-            if variacion_cotizacion_brou_compra > 0:
-                str_variacion_cotizacion_brou_compra = f'↑{variacion_cotizacion_brou_compra}'
-            if variacion_cotizacion_brou_compra < 0:
-                str_variacion_cotizacion_brou_compra = f'↓{variacion_cotizacion_brou_compra}'
+        if viejo_cotizacion_brou_compra != 0:
+            variacion_cotizacion_brou_compra = round((cotizacion_brou_compra - viejo_cotizacion_brou_compra) / viejo_cotizacion_brou_compra, 2)
+        else:
+            variacion_cotizacion_brou_compra = 0
+        if viejo_cotizacion_brou_venta != 0:
+            variacion_cotizacion_brou_venta = round((cotizacion_brou_venta - viejo_cotizacion_brou_venta) / viejo_cotizacion_brou_venta, 2)
+        else:
+            variacion_cotizacion_brou_venta = 0
+        if viejo_cotizacion_ebrou_compra != 0:
+            variacion_cotizacion_ebrou_compra = round((cotizacion_ebrou_compra - viejo_cotizacion_ebrou_compra) / viejo_cotizacion_ebrou_compra, 2)
+        else:
+            variacion_cotizacion_ebrou_compra = 0
+        if viejo_cotizacion_ebrou_venta != 0:
+            variacion_cotizacion_ebrou_venta = round((cotizacion_ebrou_venta - viejo_cotizacion_ebrou_venta) / viejo_cotizacion_ebrou_venta, 2)
+        else:
+            variacion_cotizacion_ebrou_venta = 0
 
-            if variacion_cotizacion_brou_venta == 0:
-                str_variacion_cotizacion_brou_venta = f'→{variacion_cotizacion_brou_venta}'
-            if variacion_cotizacion_brou_venta > 0:
-                str_variacion_cotizacion_brou_venta = f'↑{variacion_cotizacion_brou_venta}'
-            if variacion_cotizacion_brou_venta < 0:
-                str_variacion_cotizacion_brou_venta = f'↓{variacion_cotizacion_brou_venta}'
+        if variacion_cotizacion_brou_compra == 0:
+            str_variacion_cotizacion_brou_compra = f'→{variacion_cotizacion_brou_compra}'
+        if variacion_cotizacion_brou_compra > 0:
+            str_variacion_cotizacion_brou_compra = f'↑{variacion_cotizacion_brou_compra}'
+        if variacion_cotizacion_brou_compra < 0:
+            str_variacion_cotizacion_brou_compra = f'↓{variacion_cotizacion_brou_compra}'
 
-            if variacion_cotizacion_ebrou_compra == 0:
-                str_variacion_cotizacion_ebrou_compra = f'→{variacion_cotizacion_ebrou_compra}'
-            if variacion_cotizacion_ebrou_compra > 0:
-                str_variacion_cotizacion_ebrou_compra = f'↑{variacion_cotizacion_ebrou_compra}'
-            if variacion_cotizacion_ebrou_compra < 0:
-                str_variacion_cotizacion_ebrou_compra = f'↓{variacion_cotizacion_ebrou_compra}'
+        if variacion_cotizacion_brou_venta == 0:
+            str_variacion_cotizacion_brou_venta = f'→{variacion_cotizacion_brou_venta}'
+        if variacion_cotizacion_brou_venta > 0:
+            str_variacion_cotizacion_brou_venta = f'↑{variacion_cotizacion_brou_venta}'
+        if variacion_cotizacion_brou_venta < 0:
+            str_variacion_cotizacion_brou_venta = f'↓{variacion_cotizacion_brou_venta}'
 
-            if variacion_cotizacion_ebrou_venta == 0:
-                str_variacion_cotizacion_ebrou_venta = f'→{variacion_cotizacion_ebrou_venta}'
-            if variacion_cotizacion_ebrou_venta > 0:
-                str_variacion_cotizacion_ebrou_venta = f'↑{variacion_cotizacion_ebrou_venta}'
-            if variacion_cotizacion_ebrou_venta < 0:
-                str_variacion_cotizacion_ebrou_venta = f'↓{variacion_cotizacion_ebrou_venta}'
+        if variacion_cotizacion_ebrou_compra == 0:
+            str_variacion_cotizacion_ebrou_compra = f'→{variacion_cotizacion_ebrou_compra}'
+        if variacion_cotizacion_ebrou_compra > 0:
+            str_variacion_cotizacion_ebrou_compra = f'↑{variacion_cotizacion_ebrou_compra}'
+        if variacion_cotizacion_ebrou_compra < 0:
+            str_variacion_cotizacion_ebrou_compra = f'↓{variacion_cotizacion_ebrou_compra}'
 
-            now = datetime.now()
+        if variacion_cotizacion_ebrou_venta == 0:
+            str_variacion_cotizacion_ebrou_venta = f'→{variacion_cotizacion_ebrou_venta}'
+        if variacion_cotizacion_ebrou_venta > 0:
+            str_variacion_cotizacion_ebrou_venta = f'↑{variacion_cotizacion_ebrou_venta}'
+        if variacion_cotizacion_ebrou_venta < 0:
+            str_variacion_cotizacion_ebrou_venta = f'↓{variacion_cotizacion_ebrou_venta}'
 
-            print('------------------------------------------------')
-            print(f'\tFecha:\t{now}')
-            print(f'\tDolar BROU  -> C: ${cotizacion_brou_compra} - {str_variacion_cotizacion_brou_compra}% | V: ${cotizacion_brou_venta} - {str_variacion_cotizacion_brou_venta}%')
-            print(f'\tDolar eBROU -> C: ${cotizacion_ebrou_compra} - {str_variacion_cotizacion_ebrou_compra}% | V: ${cotizacion_ebrou_venta} - {str_variacion_cotizacion_ebrou_venta}%')
+        now = datetime.now()
 
-            viejo_cotizacion_brou_compra = cotizacion_brou_compra
-            viejo_cotizacion_brou_venta = cotizacion_brou_venta
-            viejo_cotizacion_ebrou_compra = cotizacion_ebrou_compra
-            viejo_cotizacion_ebrou_venta = cotizacion_ebrou_venta
+        print('------------------------------------------------')
+        print(f'\tFecha:\t{now}')
+        print(f'\tDolar BROU  -> C: ${cotizacion_brou_compra} - {str_variacion_cotizacion_brou_compra}% | V: ${cotizacion_brou_venta} - {str_variacion_cotizacion_brou_venta}%')
+        print(f'\tDolar eBROU -> C: ${cotizacion_ebrou_compra} - {str_variacion_cotizacion_ebrou_compra}% | V: ${cotizacion_ebrou_venta} - {str_variacion_cotizacion_ebrou_venta}%')
 
-            with open('log_cotizacion.csv', mode='r', newline='') as log_file:
-                last_register_date = list(csv.reader(log_file, delimiter=','))[-1][-1]
-                update_log = parser.parse(last_register_date).date() == now.date()
+        viejo_cotizacion_brou_compra = cotizacion_brou_compra
+        viejo_cotizacion_brou_venta = cotizacion_brou_venta
+        viejo_cotizacion_ebrou_compra = cotizacion_ebrou_compra
+        viejo_cotizacion_ebrou_venta = cotizacion_ebrou_venta
 
-            if update_log:
-                print('\tRegistrando nueva fecha')
-                with open('log_cotizacion.csv', 'a+', newline='') as log_file:
-                    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                    log_writer.writerow([now, cotizacion_brou_compra, cotizacion_brou_venta, cotizacion_ebrou_compra, cotizacion_ebrou_venta])
-        except IndexError:
-            pass
+        with open('log_cotizacion.csv', mode='r', newline='') as log_file:
+            last_register_date = list(csv.reader(log_file, delimiter=','))[-1][-1]
+            update_log = parser.parse(last_register_date).date() == now.date()
 
-        sleep(7200)
+        if update_log:
+            print('\tRegistrando nueva fecha')
+            with open('log_cotizacion.csv', 'a+', newline='') as log_file:
+                log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                log_writer.writerow([now, cotizacion_brou_compra, cotizacion_brou_venta, cotizacion_ebrou_compra, cotizacion_ebrou_venta])
+    except IndexError:
+        pass
 
 
 if __name__ == "__main__":
