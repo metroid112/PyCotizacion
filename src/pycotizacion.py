@@ -3,7 +3,8 @@ import csv
 from re import findall
 from requests_html import HTMLSession
 from time import sleep
-from datetime import datetime
+from datetime import datetime, date
+from dateutil import parser
 
 
 def main():
@@ -77,17 +78,23 @@ def main():
 
             print('------------------------------------------------')
             print(f'\tFecha:\t{now}')
-            print(f'Dolar BROU  -> C: ${cotizacion_brou_compra} - {str_variacion_cotizacion_brou_compra}% | V: ${cotizacion_brou_venta} - {str_variacion_cotizacion_brou_venta}%')
-            print(f'Dolar eBROU -> C: ${cotizacion_ebrou_compra} - {str_variacion_cotizacion_ebrou_compra}% | V: ${cotizacion_ebrou_venta} - {str_variacion_cotizacion_ebrou_venta}%')
+            print(f'\tDolar BROU  -> C: ${cotizacion_brou_compra} - {str_variacion_cotizacion_brou_compra}% | V: ${cotizacion_brou_venta} - {str_variacion_cotizacion_brou_venta}%')
+            print(f'\tDolar eBROU -> C: ${cotizacion_ebrou_compra} - {str_variacion_cotizacion_ebrou_compra}% | V: ${cotizacion_ebrou_venta} - {str_variacion_cotizacion_ebrou_venta}%')
 
             viejo_cotizacion_brou_compra = cotizacion_brou_compra
             viejo_cotizacion_brou_venta = cotizacion_brou_venta
             viejo_cotizacion_ebrou_compra = cotizacion_ebrou_compra
             viejo_cotizacion_ebrou_venta = cotizacion_ebrou_venta
 
-            with open('log_cotizacion.csv', 'a+', newline='') as log_file:
-                log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                log_writer.writerow([now, cotizacion_brou_compra, cotizacion_brou_venta, cotizacion_ebrou_compra, cotizacion_ebrou_venta])
+            with open('log_cotizacion.csv', mode='r', newline='') as log_file:
+                last_register_date = list(csv.reader(log_file, delimiter=','))[-1][-1]
+                update_log = parser.parse(last_register_date).date() == now.date()
+
+            if update_log:
+                print('\tRegistrando nueva fecha')
+                with open('log_cotizacion.csv', 'a+', newline='') as log_file:
+                    log_writer = csv.writer(log_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    log_writer.writerow([now, cotizacion_brou_compra, cotizacion_brou_venta, cotizacion_ebrou_compra, cotizacion_ebrou_venta])
         except IndexError:
             pass
 
