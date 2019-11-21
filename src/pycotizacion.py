@@ -23,7 +23,7 @@ def main():
         cotizacion_ebrou_compra = float(cotizaciones[4].replace(',', '.'))
         cotizacion_ebrou_venta = float(cotizaciones[5].replace(',', '.'))
 
-        now = datetime.now()
+        now = datetime.date(datetime.now())
 
         print('------------------------------------------------')
         print(f'\tFecha:\t{now}')
@@ -33,7 +33,7 @@ def main():
         with open('log_cotizacion.csv', mode='r', newline='') as log_file:
             csv_list = list(csv.reader(log_file, delimiter=','))
             last_register_date = csv_list[-1][0]
-            update_log = parser.parse(last_register_date).date() == now.date()
+            update_log = last_register_date == now
 
         if update_log:
             print('\tRegistrando nueva fecha')
