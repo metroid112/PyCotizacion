@@ -31,7 +31,8 @@ def main():
         print(f'\tDolar eBROU -> C: ${cotizacion_ebrou_compra} | V: ${cotizacion_ebrou_venta}')
 
         with open('log_cotizacion.csv', mode='r', newline='') as log_file:
-            last_register_date = list(csv.reader(log_file, delimiter=','))[-1][-1]
+            csv_list = list(csv.reader(log_file, delimiter=','))
+            last_register_date = csv_list[-1][0]
             update_log = parser.parse(last_register_date).date() == now.date()
 
         if update_log:
