@@ -33,7 +33,9 @@ def main():
         with open('log_cotizacion.csv', mode='r', newline='') as log_file:
             csv_list = list(csv.reader(log_file, delimiter=','))
             last_register_date = csv_list[-1][0]
-            update_log = last_register_date == now
+            print(last_register_date)
+            print(now)
+            update_log = last_register_date != now
 
         if update_log:
             print('\tRegistrando nueva fecha')
